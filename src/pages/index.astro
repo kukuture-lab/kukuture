@@ -20,38 +20,20 @@ const kenkyu_p = Math.round((kenkyu_done / kenkyu_total) * 100); // 割合をパ
 const illustrationProgressList = [
   {
     title: "イラスト制作",
-    currentTask: "構想中",
-    percentage: 0,
+    currentTask: "構想中・ラフ",
+    percentage: 5,
     comment: "なに描こうかね",
-  },
-  {
-    title: "哲学本",
-    currentTask: "次の本",
-    percentage: 50,
-    comment: "多少は理解した",
-  },
-  {
-    title: "政治本",
-    currentTask: "次の本",
-    percentage: 50,
-    comment: "まだまだ理解できてない",
-  },
-  {
-    title: "研究室調べ",
-    currentTask: `${kenkyu_done}/${kenkyu_total}`,
-    percentage: kenkyu_p, // ← kenkyu_p変数を指定！
-    comment: "ちゃんと調べる",
   },
   {
     title: "本3",
     currentTask: "まだはじめの方",
-    percentage: 5, // ← kenkyu_p変数を指定！
+    percentage: 7, // ← kenkyu_p変数を指定！
     comment: "タスク多いな",
   },
   {
     title: "線形問題集",
     currentTask: "一次方程式",
-    percentage: 5, // 
+    percentage: 9, // 
     comment: "タスク多いな",
   },
 ];
