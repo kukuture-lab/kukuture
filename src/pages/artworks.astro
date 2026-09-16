@@ -1,0 +1,323 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { artworks } from '../data/artworks';
+
+const totalWorks = artworks.length;
+---
+
+<Layout title="Artworks | くくつれ">
+  <!-- ゲームUI・モダンフォント読み込み -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet" />
+
+  <div class="container">
+    <section class="artworks-section">
+      <!-- ヘッダーエリア -->
+      <header class="artworks-header">
+        <div class="header-top">
+          <div class="title-wrap">
+            <span class="title-accent"></span>
+            <h1 class="title-text">ARTWORKS</h1>
+          </div>
+          <div class="counter-badge">
+            TOTAL WORKS: <span>{totalWorks}</span>
+          </div>
+        </div>
+        <p class="section-desc">制作したイラスト作品のギャラリーです。クリックすると原寸大で鑑賞できます。</p>
+      </header>
+
+      <!-- 作品グリッド一覧 -->
+      {artworks.length === 0 ? (
+        <div class="empty-state">まだ作品が登録されていません。</div>
+      ) : (
+        <div class="artworks-grid">
+          {artworks.map((work) => (
+            <article class="artwork-card">
+              <!-- 画像表示エリア（クリックで拡大・別タブ表示） -->
+              <a 
+                href={work.image} 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                class="image-link"
+                title={`${work.title} を原寸大で開く`}
+              >
+                <div class="image-container">
+                  <img 
+                    src={work.image} 
+                    alt={work.title} 
+                    class="artwork-image" 
+                    loading="lazy"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+                  />
+                  <!-- 画像ファイルがまだ無い場合のプレースホルダー案内 -->
+                  <div class="image-placeholder" style="display: none;">
+                    <span class="placeholder-icon">🎨</span>
+                    <span class="placeholder-text">画像を準備中</span>
+                    <span class="placeholder-path"><code>{work.image}</code></span>
+                  </div>
+                </div>
+              </a>
+
+              <!-- 作品情報 -->
+              <div class="artwork-body">
+                <div class="artwork-meta">
+                  <span class="artwork-date">{work.date}</span>
+                  {work.tags && work.tags.length > 0 && (
+                    <div class="tag-group">
+                      {work.tags.map((tag) => (
+                        <span class="tag">{tag}</span>
+                      ))}
+                    </div>
+                  )}
+                </div>
+                <h2 class="artwork-title">{work.title}</h2>
+                {work.description && (
+                  <p class="artwork-desc">{work.description}</p>
+                )}
+              </div>
+            </article>
+          ))}
+        </div>
+      )}
+    </section>
+  </div>
+</Layout>
+
+<!-- 背景を白基調に整えるグローバルスタイル -->
+<style is:global>
+  body {
+    background-color: #ffffff !important;
+  }
+</style>
+
+<style>
+  .artworks-section {
+    padding: 2rem 0 4rem;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+  }
+
+  /* ヘッダー */
+  .artworks-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1.5rem;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 0.75rem;
+  }
+
+  .title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .title-accent {
+    width: 6px;
+    height: 26px;
+    background: #ec4899; /* イラストらしいピンク/パープルアクセント */
+    border-radius: 2px;
+  }
+
+  .title-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .counter-badge {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #64748b;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 6px 16px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+
+  .counter-badge span {
+    color: #ec4899;
+    font-size: 1.3rem;
+    margin-left: 6px;
+    font-weight: 700;
+  }
+
+  .section-desc {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0;
+  }
+
+  /* 作品グリッド：1行に2枚（2カラム）で大きく見せる */
+  .artworks-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 32px;
+    align-items: start;
+  }
+
+  /* 作品カード */
+  .artwork-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+  }
+
+  .artwork-card:hover {
+    transform: translateY(-4px);
+    border-color: #cbd5e1;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+  }
+
+  /* 画像エリア：クリックで原寸大表示 */
+  .image-link {
+    text-decoration: none;
+    display: block;
+    background-color: #f8fafc;
+    border-bottom: 1px solid #f1f5f9;
+    cursor: zoom-in;
+  }
+
+  .image-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    background-color: #f8fafc;
+  }
+
+  /* イラスト本体：高さを無理に固定せず、頭から足先まで全身が100%まるごと写る！ */
+  .artwork-image {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    transition: transform 0.25s ease;
+  }
+
+  .artwork-card:hover .artwork-image {
+    transform: scale(1.015);
+  }
+
+  /* 画像準備中のプレースホルダー */
+  .image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 1rem;
+    background-color: #f8fafc;
+    color: #64748b;
+  }
+
+  .placeholder-icon {
+    font-size: 2.2rem;
+  }
+
+  .placeholder-text {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  .placeholder-path code {
+    font-size: 0.75rem;
+    background: #e2e8f0;
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: #475569;
+  }
+
+  /* カード本文 */
+  .artwork-body {
+    padding: 16px 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+  }
+
+  .artwork-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    flex-wrap: wrap;
+  }
+
+  .artwork-date {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+
+  .tag-group {
+    display: flex;
+    gap: 6px;
+  }
+
+  .tag {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #f1f5f9;
+    color: #475569;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .artwork-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 6px 0;
+    line-height: 1.4;
+  }
+
+  .artwork-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #94a3b8;
+    font-size: 1.1rem;
+  }
+
+  /* スマホ表示対応：幅が狭い端末では1列で大きく見せる */
+  @media (max-width: 680px) {
+    .artworks-grid {
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+  }
+</style>
+

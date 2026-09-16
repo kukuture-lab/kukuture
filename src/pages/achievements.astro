@@ -2,14 +2,15 @@
 /**
  * 【実績解除一覧ページ - クリーン・ホワイトテーマ】
  * src/pages/achievements.astro
- * 
+ *
  * 背景や各カード、フィルターボタンなどの各要素を白基調のクリーンなデザインに統一しています。
  */
-import Layout from '../layouts/Layout.astro';
-import { achievements } from '../data/achievements';
+import Layout from "../layouts/Layout.astro";
+import { achievements } from "../data/achievements";
 
 // フィルター用ジャンル一覧
 const genres = ["All", "Life", "Study", "Dev", "Game", "Travel"];
+const genres = ["All", "Art", "Life", "Study", "Dev", "Game", "Travel"];
 
 // トロフィーアイコン対応表
 const trophyIcons: Record<string, string> = {
@@ -26,7 +27,10 @@ const totalCount = achievements.length;
   <!-- ゲームUI風フォント -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap"
+    rel="stylesheet"
+  />
 
   <div class="container">
     <section class="achievements-section">
@@ -44,51 +48,55 @@ const totalCount = achievements.length;
 
         <!-- フィルターボタン -->
         <nav class="filter-group" aria-label="実績ジャンルフィルター">
-          {genres.map((genre, index) => (
-            <button 
-              class={`filter-btn ${index === 0 ? 'active' : ''}`}
-              data-genre={genre}
-            >
-              {genre.toUpperCase()}
-            </button>
-          ))}
+          {
+            genres.map((genre, index) => (
+              <button
+                class={`filter-btn ${index === 0 ? "active" : ""}`}
+                data-genre={genre}
+              >
+                {genre.toUpperCase()}
+              </button>
+            ))
+          }
         </nav>
       </header>
 
       <!-- カード一覧（CSS Grid） -->
       <div id="achievements-grid" class="achievements-grid">
-        {achievements.map((item) => {
-          const hasLink = Boolean(item.url && item.url.trim() !== "");
-          const icon = trophyIcons[item.rank] || "🏅";
-          const rankLower = item.rank.toLowerCase();
+        {
+          achievements.map((item) => {
+            const hasLink = Boolean(item.url && item.url.trim() !== "");
+            const icon = trophyIcons[item.rank] || "🏅";
+            const rankLower = item.rank.toLowerCase();
 
-          return (
-            <article 
-              class={`card rank-${rankLower} ${hasLink ? 'has-link' : 'no-link'}`}
-              data-genre={item.genre}
-              data-url={hasLink ? item.url : ""}
-              tabindex={hasLink ? 0 : undefined}
-              role={hasLink ? "button" : undefined}
-              aria-label={hasLink ? `${item.title} の詳細を開く` : undefined}
-            >
-              <div class="card-content">
-                <div class="card-header">
-                  <div class="rank-badge">
-                    <span class="rank-icon">{icon}</span>
-                    <span class="rank-text">{item.rank}</span>
+            return (
+              <article
+                class={`card rank-${rankLower} ${hasLink ? "has-link" : "no-link"}`}
+                data-genre={item.genre}
+                data-url={hasLink ? item.url : ""}
+                tabindex={hasLink ? 0 : undefined}
+                role={hasLink ? "button" : undefined}
+                aria-label={hasLink ? `${item.title} の詳細を開く` : undefined}
+              >
+                <div class="card-content">
+                  <div class="card-header">
+                    <div class="rank-badge">
+                      <span class="rank-icon">{icon}</span>
+                      <span class="rank-text">{item.rank}</span>
+                    </div>
+                    <span class="genre-tag">{item.genre}</span>
                   </div>
-                  <span class="genre-tag">{item.genre}</span>
+                  <h2 class="card-title">{item.title}</h2>
                 </div>
-                <h2 class="card-title">{item.title}</h2>
-              </div>
 
-              <div class="card-footer">
-                <span class="card-date">{item.date}</span>
-                {hasLink && <span class="link-indicator">DETAILS ↗</span>}
-              </div>
-            </article>
-          );
-        })}
+                <div class="card-footer">
+                  <span class="card-date">{item.date}</span>
+                  {hasLink && <span class="link-indicator">DETAILS ↗</span>}
+                </div>
+              </article>
+            );
+          })
+        }
         <div id="empty-message" class="empty-state" style="display: none;">
           NO ACHIEVEMENTS FOUND IN THIS CATEGORY
         </div>
@@ -102,8 +110,11 @@ const totalCount = achievements.length;
      =================================================== -->
 <script>
   // DOM要素の取得
-  const filterButtons = document.querySelectorAll<HTMLButtonElement>(".filter-btn");
-  const cards = document.querySelectorAll<HTMLElement>(".achievements-grid .card");
+  const filterButtons =
+    document.querySelectorAll<HTMLButtonElement>(".filter-btn");
+  const cards = document.querySelectorAll<HTMLElement>(
+    ".achievements-grid .card",
+  );
   const emptyMessage = document.getElementById("empty-message");
 
   // 1. フィルターボタンのクリック挙動
@@ -119,8 +130,8 @@ const totalCount = achievements.length;
       // 各カードの表示・非表示を切り替え
       cards.forEach((card) => {
         const cardGenre = card.getAttribute("data-genre");
-        const shouldShow = 
-          selectedGenre === "All" || 
+        const shouldShow =
+          selectedGenre === "All" ||
           cardGenre?.toLowerCase() === selectedGenre?.toLowerCase();
 
         if (shouldShow) {
@@ -171,7 +182,7 @@ const totalCount = achievements.length;
 <style>
   .achievements-section {
     padding: 2rem 0;
-    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-family: "Zen Kaku Gothic New", sans-serif;
   }
 
   /* ヘッダー */
@@ -204,7 +215,7 @@ const totalCount = achievements.length;
   }
 
   .title-text {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Rajdhani", sans-serif;
     font-size: 2rem;
     font-weight: 700;
     letter-spacing: 2px;
@@ -214,7 +225,7 @@ const totalCount = achievements.length;
 
   /* カウンターバッジ（白背景＋ボーダー） */
   .counter-badge {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Rajdhani", sans-serif;
     font-size: 1rem;
     font-weight: 700;
     letter-spacing: 1.2px;
@@ -246,7 +257,7 @@ const totalCount = achievements.length;
     border: 1px solid #e2e8f0;
     padding: 7px 18px;
     border-radius: 6px;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Rajdhani", sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
     letter-spacing: 1px;
@@ -286,7 +297,10 @@ const totalCount = achievements.length;
     min-height: 140px;
     border: 1px solid #e2e8f0;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      border-color 0.2s ease;
     user-select: none;
   }
 
@@ -372,7 +386,7 @@ const totalCount = achievements.length;
   }
 
   .rank-text {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Rajdhani", sans-serif;
     font-size: 0.8rem;
     font-weight: 700;
     letter-spacing: 0.5px;
@@ -380,7 +394,7 @@ const totalCount = achievements.length;
   }
 
   .genre-tag {
-    font-family: 'Zen Kaku Gothic New', sans-serif;
+    font-family: "Zen Kaku Gothic New", sans-serif;
     font-size: 0.75rem;
     font-weight: 700;
     padding: 3px 10px;
@@ -413,7 +427,7 @@ const totalCount = achievements.length;
   }
 
   .card-date {
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Rajdhani", sans-serif;
     font-weight: 700;
     letter-spacing: 0.5px;
   }
@@ -438,7 +452,7 @@ const totalCount = achievements.length;
     text-align: center;
     padding: 48px 16px;
     color: #94a3b8;
-    font-family: 'Rajdhani', sans-serif;
+    font-family: "Rajdhani", sans-serif;
     font-size: 1.1rem;
     letter-spacing: 1px;
   }

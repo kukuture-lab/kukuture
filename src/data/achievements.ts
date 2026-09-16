@@ -9,6 +9,13 @@ export interface Achievement {
 // 実績データ一覧（新しい実績を追加するときは、この配列の先頭に追加します）
 export const achievements: Achievement[] = [
   {
+    title: "イラストを描いた",
+    genre: "Art",
+    date: "2026.09.15",
+    rank: "Silver",
+    url: "/artworks",
+  },
+  {
     title: "研究室を調べた",
     genre: "Study",
     date: "2026.09.07",

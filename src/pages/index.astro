@@ -16,14 +16,8 @@ const kenkyu_done = 15;
 const kenkyu_total = 254;
 const kenkyu_p = Math.round((kenkyu_done / kenkyu_total) * 100); // 割合をパーセントにして四捨五入（約2%）
 
-// イラスト進捗データ（配列 [] にすることで、いくつでも増やせます！）
+// 進捗データ（配列 [] にすることで、いくつでも増やせます！）
 const illustrationProgressList = [
-  {
-    title: "イラスト制作",
-    currentTask: "構想中・ラフ",
-    percentage: 5,
-    comment: "なに描こうかね",
-  },
   {
     title: "本3",
     currentTask: "まだはじめの方",
@@ -109,7 +103,8 @@ const socialLinks = [
 
         <!-- アクションボタン群 -->
         <div class="channel-actions">
-          <a href="/achievements" class="btn btn-primary">実績を見る</a>
+          <a href="/artworks" class="btn btn-primary">イラストを見る</a>
+          <a href="/achievements" class="btn btn-secondary">実績を見る</a>
           <a href="/about" class="btn btn-secondary">自己紹介</a>
         </div>
       </div>
