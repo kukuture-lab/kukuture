@@ -110,7 +110,16 @@ const socialLinks = [
       </div>
     </div>
 
-    <!-- イラスト進捗セクション -->
+    <!-- 今日の日付表示バー（タスクの上） -->
+    <div class="today-date-bar">
+      <div class="today-badge-wrap">
+        <span class="today-icon">📅</span>
+        <span class="today-label">TODAY</span>
+      </div>
+      <span id="today-date-display" class="today-date-text">2026年9月16日(水)</span>
+    </div>
+
+    <!-- タスク進捗セクション -->
     <section class="progress-section">
       <div class="progress-list">
         {
@@ -308,6 +317,22 @@ const socialLinks = [
   // 初回実行 ＆ 1秒ごとに更新
   updateCountdown();
   setInterval(updateCountdown, 1000);
+
+  // 今日の日付をリアルタイム取得・表示
+  function updateTodayDate() {
+    const now = new Date();
+    const year = now.getFullYear();
+    const month = now.getMonth() + 1;
+    const date = now.getDate();
+    const dayList = ["日", "月", "火", "水", "木", "金", "土"];
+    const day = dayList[now.getDay()];
+
+    const dateElem = document.getElementById("today-date-display");
+    if (dateElem) {
+      dateElem.textContent = `${year}年${month}月${date}日(${day})`;
+    }
+  }
+  updateTodayDate();
 </script>
 
 <style>
@@ -765,10 +790,52 @@ const socialLinks = [
   }
 
   /* ===================================================
-     イラスト制作進捗バーセクション
+     今日の日付表示バー
+     =================================================== */
+  .today-date-bar {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+
+  .today-badge-wrap {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .today-icon {
+    font-size: 1.15rem;
+  }
+
+  .today-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    color: #2563eb;
+    background-color: #eff6ff;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  .today-date-text {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  /* ===================================================
+     タスク進捗バーセクション
      =================================================== */
   .progress-section {
-    margin-top: 2rem;
+    margin-top: 0;
   }
 
   .progress-list {
