@@ -15,7 +15,7 @@ export interface Artwork {
 export const artworks: Artwork[] = [
   {
     id: 5,
-    title: "イラスト 2026.09.10",
+    title: "イラスト 2026.09.15",
     date: "2026.09.10",
     image: "/イラスト 20260910 2.jpg",
     description: "結構満足なイラストです。",
