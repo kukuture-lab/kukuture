@@ -1,0 +1,345 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { linkCategories } from '../data/links';
+
+// 全登録リンク数を計算
+const totalLinks = linkCategories.reduce((sum, cat) => sum + cat.links.length, 0);
+---
+
+<Layout title="Links | くくつれ">
+  <!-- ゲームUI・モダンフォント -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@600;700&family=Zen+Kaku+Gothic+New:wght@500;700&display=swap" rel="stylesheet" />
+
+  <div class="container">
+    <section class="links-page">
+      <!-- ページヘッダー -->
+      <header class="page-header">
+        <div class="header-top">
+          <div class="title-wrap">
+            <span class="title-accent"></span>
+            <h1 class="title-text">USEFUL LINKS</h1>
+          </div>
+          <div class="counter-badge">
+            TOTAL: <span>{totalLinks}</span> LINKS
+          </div>
+        </div>
+        <p class="section-desc">
+          日頃の制作や学習、情報収集で「これは役立った！」と感じたおすすめリンクのまとめです。
+        </p>
+      </header>
+
+      <!-- ジャンル目次（クイックジャンプ） -->
+      <nav class="category-nav">
+        {linkCategories.map((cat, idx) => (
+          <a href={`#category-${idx}`} class="category-chip">
+            <span class="chip-icon">{cat.categoryIcon}</span>
+            <span class="chip-name">{cat.categoryName}</span>
+            <span class="chip-count">{cat.links.length}</span>
+          </a>
+        ))}
+      </nav>
+
+      <!-- カテゴリー別リンクリスト -->
+      <div class="category-sections">
+        {linkCategories.map((cat, idx) => (
+          <section id={`category-${idx}`} class="category-section">
+            <div class="category-header">
+              <span class="category-icon">{cat.categoryIcon}</span>
+              <h2 class="category-title">{cat.categoryName}</h2>
+              <span class="category-badge">{cat.links.length}件</span>
+            </div>
+
+            <div class="links-grid">
+              {cat.links.map((link) => (
+                <a 
+                  href={link.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer" 
+                  class="link-card"
+                >
+                  <div class="card-header">
+                    <h3 class="link-title">{link.title}</h3>
+                    <span class="link-arrow">↗</span>
+                  </div>
+
+                  {link.tag && (
+                    <div class="tag-row">
+                      <span class="link-tag">{link.tag}</span>
+                    </div>
+                  )}
+
+                  <p class="link-desc">{link.description}</p>
+
+                  <div class="link-footer">
+                    <span class="link-url-text">
+                      {link.url.replace(/^https?:\/\//, '').replace(/\/$/, '')}
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        ))}
+      </div>
+    </section>
+  </div>
+</Layout>
+
+<!-- 背景を白基調に整えるグローバルスタイル -->
+<style is:global>
+  body {
+    background-color: #ffffff !important;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+</style>
+
+<style>
+  .links-page {
+    padding: 2rem 0 4rem;
+    font-family: 'Zen Kaku Gothic New', sans-serif;
+  }
+
+  /* ヘッダー */
+  .page-header {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e2e8f0;
+    padding-bottom: 1.5rem;
+  }
+
+  .header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 0.75rem;
+  }
+
+  .title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .title-accent {
+    width: 6px;
+    height: 26px;
+    background: #0284c7; /* 爽やかなスカイブルーアクセント */
+    border-radius: 2px;
+  }
+
+  .title-text {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .counter-badge {
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    color: #64748b;
+    background: #ffffff;
+    border: 1px solid #e2e8f0;
+    padding: 6px 16px;
+    border-radius: 6px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
+  }
+
+  .counter-badge span {
+    color: #0284c7;
+    font-size: 1.3rem;
+    margin: 0 4px;
+    font-weight: 700;
+  }
+
+  .section-desc {
+    font-size: 0.95rem;
+    color: #64748b;
+    margin: 0;
+  }
+
+  /* ジャンル目次（チップ型ナビ） */
+  .category-nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 2.5rem;
+  }
+
+  .category-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #f8fafc;
+    border: 1px solid #e2e8f0;
+    padding: 6px 14px;
+    border-radius: 20px;
+    text-decoration: none;
+    color: #334155;
+    font-size: 0.85rem;
+    font-weight: 700;
+    transition: all 0.2s ease;
+  }
+
+  .category-chip:hover {
+    background-color: #f1f5f9;
+    border-color: #cbd5e1;
+    color: #0f172a;
+    transform: translateY(-1px);
+  }
+
+  .chip-count {
+    background-color: #e2e8f0;
+    color: #475569;
+    font-size: 0.75rem;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 2px;
+  }
+
+  /* カテゴリーセクション */
+  .category-sections {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+  }
+
+  .category-section {
+    scroll-margin-top: 80px; /* スクロール時のヘッダー被り防止 */
+  }
+
+  .category-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid #f1f5f9;
+  }
+
+  .category-icon {
+    font-size: 1.4rem;
+  }
+
+  .category-title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+  }
+
+  .category-badge {
+    font-size: 0.75rem;
+    font-weight: 700;
+    background-color: #f1f5f9;
+    color: #64748b;
+    padding: 2px 8px;
+    border-radius: 4px;
+  }
+
+  /* リンクカードグリッド */
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+
+  /* リンクカード */
+  .link-card {
+    background-color: #ffffff;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 18px 20px;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+  }
+
+  .link-card:hover {
+    transform: translateY(-3px);
+    border-color: #0284c7;
+    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.08);
+  }
+
+  .card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .link-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+    line-height: 1.4;
+    transition: color 0.2s ease;
+  }
+
+  .link-card:hover .link-title {
+    color: #0284c7;
+  }
+
+  .link-arrow {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #94a3b8;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .link-card:hover .link-arrow {
+    color: #0284c7;
+    transform: translate(2px, -2px);
+  }
+
+  .tag-row {
+    margin-bottom: 8px;
+  }
+
+  .link-tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    background-color: #f0f9ff;
+    color: #0369a1;
+    padding: 2px 7px;
+    border-radius: 4px;
+    display: inline-block;
+  }
+
+  .link-desc {
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin: 0 0 12px 0;
+    flex: 1; /* フッターを下揃えにする */
+  }
+
+  .link-footer {
+    border-top: 1px dashed #f1f5f9;
+    padding-top: 8px;
+    margin-top: auto;
+  }
+
+  .link-url-text {
+    font-size: 0.75rem;
+    color: #94a3b8;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: block;
+  }
+</style>
+
